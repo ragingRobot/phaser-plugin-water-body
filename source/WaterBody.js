@@ -99,7 +99,7 @@ export default class WaterBody {
                 ]))
         );
 
-        this.emitter = this.scene.add.particles(x, y, 'droplet', {
+        this.emitter = context.add.particles(x, y, 'droplet', {
             alpha: 1,
             tint: 0x0b5095,
             speed: {
