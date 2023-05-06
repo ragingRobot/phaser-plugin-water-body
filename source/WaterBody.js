@@ -127,7 +127,7 @@ export default class WaterBody {
                 deathCallback: this.onDropletDeath,
             });
         } catch (err) {
-
+            console.log(err);
         }
 
         context.sys.events.on('update', this.update, this);
