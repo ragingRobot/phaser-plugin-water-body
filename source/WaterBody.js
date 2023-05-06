@@ -2,7 +2,7 @@ import WaterColumn from './WaterColumn';
 
 export default class WaterBody {
 
-    constructor (
+    constructor(
         context,
         x = 0,
         y = 0,
@@ -54,7 +54,7 @@ export default class WaterBody {
             );
 
         const data = this.columns
-            .reduce((cache, { x, y }) => ([ ...cache, x, y ]), []);
+            .reduce((cache, { x, y }) => ([...cache, x, y]), []);
         this.body = context.add.polygon(x, y, [
             coords[0], this.h,
             ...data,
@@ -98,43 +98,47 @@ export default class WaterBody {
                     this.y + y
                 ]))
         );
-        this.emitter = context.add.particles('droplet').createEmitter({
-            alpha: 1,
-            tint: 0x0b5095,
-            speed: {
-                min: 100,
-                max: 500,
-            },
-            gravityY: 1000,
-            lifespan: 4000,
-            quantity: 0,
-            frequency: 1000,
-            angle: {
-                min: 240,
-                max: 300,
-            },
-            scale: {
-                min: .5,
-                max: .1,
-            },
-            deathZone: {
-                type: 'onEnter',
-                source: emitterDeathZone,
-            },
-            deathCallbackScope: this,
-            deathCallback: this.onDropletDeath,
-        });
+        try {
+            this.emitter = context.add.particles('droplet').createEmitter({
+                alpha: 1,
+                tint: 0x0b5095,
+                speed: {
+                    min: 100,
+                    max: 500,
+                },
+                gravityY: 1000,
+                lifespan: 4000,
+                quantity: 0,
+                frequency: 1000,
+                angle: {
+                    min: 240,
+                    max: 300,
+                },
+                scale: {
+                    min: .5,
+                    max: .1,
+                },
+                deathZone: {
+                    type: 'onEnter',
+                    source: emitterDeathZone,
+                },
+                deathCallbackScope: this,
+                deathCallback: this.onDropletDeath,
+            });
+        } catch (err) {
+
+        }
 
         context.sys.events.on('update', this.update, this);
     }
 
-    update () {
+    update() {
         this.columns.forEach(column =>
             column.update(this.dampening, this.tension)
         );
 
         const data = this.columns
-            .reduce((cache, { x, y }) => ([ ...cache, x, y ]), []);
+            .reduce((cache, { x, y }) => ([...cache, x, y]), []);
         this.body.geom.setTo([
             0, this.h,
             ...data,
@@ -185,30 +189,29 @@ export default class WaterBody {
         }
     }
 
-    splash (index, speed = 1, numDroplets = 3) {
+    splash(index, speed = 1, numDroplets = 3) {
         let column = this.columns[index];
         column.speed = speed;
 
-        this.emitter
-            .explode(numDroplets, this.x + column.x, this.y + column.y)
+        this.emitter?.explode(numDroplets, this.x + column.x, this.y + column.y)
 
         return this;
     }
 
-    ripple (index, speed) {
+    ripple(index, speed) {
         let column = this.columns[index];
         column.speed = speed;
 
         return this;
     }
 
-    setDebug (bool) {
+    setDebug(bool) {
         this.debug = bool;
 
         return this;
     }
 
-    onDropletDeath ({ x, }) {
+    onDropletDeath({ x, }) {
         const minColumn = 0;
         const maxColumn = this.columns.length - 1;
         const targetColumn = this.columns.findIndex((col, i) => this.x + col.x >= x && i);
