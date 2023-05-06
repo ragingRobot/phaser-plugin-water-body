@@ -20,7 +20,8 @@ export default class WaterBody {
         if (typeof texture === 'undefined') {
             throw new Error('This version of WaterBody requires explicitly setting a texture');
         }
-
+        console.log("yesdsfsdfsdf");
+        window.splash = this.splash;
         this.debug = false;
 
         this.x = x;
@@ -108,24 +109,19 @@ export default class WaterBody {
             },
             gravityY: 1000,
             lifespan: 4000,
-            quantity: 0,
             frequency: 1000,
+            quantity: 1,
             angle: {
                 min: 240,
                 max: 300,
             },
             scale: {
-                min: .5,
-                max: .1,
-            },
-            deathZone: {
-                type: 'onEnter',
-                source: emitterDeathZone,
+                min: .1,
+                max: .5,
             },
             deathCallbackScope: this,
             deathCallback: this.onDropletDeath,
         });
-
 
         context.sys.events.on('update', this.update, this);
     }
@@ -187,11 +183,12 @@ export default class WaterBody {
         }
     }
 
-    splash(index, speed = 1, numDroplets = 3) {
+    splash(index, speed = 1, numDroplets = 5) {
         let column = this.columns[index];
         column.speed = speed;
-
-        this.emitter?.explode(numDroplets, this.x + column.x, this.y + column.y)
+        this.emitter.x = this.x + column.x;
+        this.emitter.y = this.y + column.y;
+        this.emitter.explode(numDroplets, 0,0)
 
         return this;
     }
