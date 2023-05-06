@@ -98,37 +98,34 @@ export default class WaterBody {
                     this.y + y
                 ]))
         );
-        try {
 
-            this.emitter = this.scene.add.particles(x, y, 'droplet', {
-                alpha: 1,
-                tint: 0x0b5095,
-                speed: {
-                    min: 100,
-                    max: 500,
-                },
-                gravityY: 1000,
-                lifespan: 4000,
-                quantity: 0,
-                frequency: 1000,
-                angle: {
-                    min: 240,
-                    max: 300,
-                },
-                scale: {
-                    min: .5,
-                    max: .1,
-                },
-                deathZone: {
-                    type: 'onEnter',
-                    source: emitterDeathZone,
-                },
-                deathCallbackScope: this,
-                deathCallback: this.onDropletDeath,
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        this.emitter = this.scene.add.particles(x, y, 'droplet', {
+            alpha: 1,
+            tint: 0x0b5095,
+            speed: {
+                min: 100,
+                max: 500,
+            },
+            gravityY: 1000,
+            lifespan: 4000,
+            quantity: 0,
+            frequency: 1000,
+            angle: {
+                min: 240,
+                max: 300,
+            },
+            scale: {
+                min: .5,
+                max: .1,
+            },
+            deathZone: {
+                type: 'onEnter',
+                source: emitterDeathZone,
+            },
+            deathCallbackScope: this,
+            deathCallback: this.onDropletDeath,
+        });
+
 
         context.sys.events.on('update', this.update, this);
     }
