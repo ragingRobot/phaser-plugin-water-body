@@ -20,7 +20,6 @@ export default class WaterBody {
         if (typeof texture === 'undefined') {
             throw new Error('This version of WaterBody requires explicitly setting a texture');
         }
-        console.log("yesdsfsdfsdf");
         window.splash = this.splash;
         this.debug = false;
 
